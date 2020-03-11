@@ -1,30 +1,3 @@
-/* Wireless Joystick Tank Steering Robot Example
- * by: Alex Wende
- * SparkFun Electronics
- * date: 9/28/16
- * 
- * license: Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
- * Do whatever you'd like with this code, use it for any purpose.
- * Please attribute and keep this license.
- * 
- * This is example code for the Wireless Joystick to control a robot
- * using XBee. Plug the first Xbee into the Wireless Joystick board,
- * and connect the second to the SparkFun Serial Motor Driver.
- * 
- * Moving the left and right joystick up and down will change the
- * speed and direction of motor 0 and motor 1. The left trigger will
- * reduce the maximum speed by 5%, while the right trigger button
- * will increase the maximum speed by 5%.
- * 
- * Connections to the motor driver is as follows:
- * XBee - Motor Driver
- *   5V - VCC
- *  GND - GND
- * DOUT - RX
- * 
- * Power the motor driver with no higher than 11V!
- */
-
 #define L_TRIG 6        // Pin used for left trigger
 #define R_TRIG 3        // Pin used for right trigger
 #define L_JOYSTICK A0   // Pin used for left joystick
