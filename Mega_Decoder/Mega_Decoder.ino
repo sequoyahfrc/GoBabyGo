@@ -15,7 +15,7 @@ void setup() {
   //init serial
 
   Serial.begin(9600); //debug log
-  Serial3.begin(9600); //x bee
+  Serial3.begin(9600); //XBee
 
   //attach servos
   do {
@@ -43,7 +43,6 @@ void loop() {
   //reset offset once we get to the end of a message
 
   if (offset == MESSAGE_LEN) {
-
     //see if we recieved a left motor set
 
     bool setLeft = message[0] == 'L';
@@ -86,7 +85,7 @@ void loop() {
     //only happens if there is a data corruption
 
     if (val == NULL) {
-
+      return;
     }
 
     //atoi() converts a string to an integer
@@ -132,20 +131,23 @@ void loop() {
     } else {
       right.writeMicroseconds(speed);
     }
-
     //set offset back to 0 to start a new message
 
     offset = 0;
   }
 
   //if data is available
-
   if (Serial3.available()) {
-
+    
     //read one byte from Serial3
+    //would use readStringUntil, but that would make
+    //this code vulnerable to a buffer overflow
+    //because the message could be overflowed with
+    //more than 10 characters, which could be used
+    //to run malicious code
 
     message[offset] = Serial3.read();
-
+    Serial.println("Got data: " + String(message[offset]));
     //check for sync issues!
     //we want the first character of our message to be 'L' or 'R',
     //so if it isnt we can have issues.
@@ -156,13 +158,7 @@ void loop() {
 
       //wait for \n (end of message)
 
-      char b = '\0';
-
-      while (b != '\n') {
-        if (Serial3.available()) {
-          b = Serial3.read();
-        }
-      }
+      Serial3.readStringUntil('\n');
 
       //exit loop and wait for next message
 
