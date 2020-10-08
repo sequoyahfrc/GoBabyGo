@@ -16,9 +16,10 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "USBCON"
             ],
-            "intelliSenseMode": "gcc-x86",
+            "intelliSenseMode": "${default}",
             "compilerPath": "\"C:\\Program Files (x86)\\Arduino\\arduino-builder.exe\"",
             "forcedInclude": [
                 "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
