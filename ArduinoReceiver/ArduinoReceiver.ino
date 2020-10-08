@@ -12,6 +12,8 @@ Servo LeftMotor;           //Left Motor Servo Object
 int RightPin = 5;      //Right Motor pin
 Servo RightMotor;           //Right Motor Servo Object
 
+int L, R;
+
 void setup()
 {
   // Tells each of the servo objects which pin it should output to
@@ -21,39 +23,41 @@ void setup()
   Serial.begin(9600);
   LeftMotor.writeMicroseconds(1500);          //right motor driver code
   RightMotor.writeMicroseconds(1500);          //left motor driver code
+  L = 1500;
+  R = 1500;
 }
 
 void loop() {
   if(Serial.available() > 0){
-    int xbee=Serial.read();
+    int xbee = Serial.read();
     
-    if(xbee == 65){
-      LeftMotor.writeMicroseconds(1800);          //right motor driver code
-      RightMotor.writeMicroseconds(1800);          //left motor driver code
-      Serial.println("Forward");
+    if(xbee == 0x46){ //F
+      L = (1800);          //right motor driver code
+      R = (1800);          //left motor driver code
+      //Serial.println("Forward");
     }
-    else if(xbee == 66){
-      LeftMotor.writeMicroseconds(1800);          //right motor driver code
-      RightMotor.writeMicroseconds(1200);          //left motor driver code
-      Serial.println("Turn Right");
+    else if(xbee == 0x52){ //R
+      L = (1800);          //right motor driver code
+      R = (1200);          //left motor driver code
+      //Serial.println("Turn Right");
     }
-    else if(xbee == 67){
-      LeftMotor.writeMicroseconds(1200);          //right motor driver code
-      RightMotor.writeMicroseconds(1200);          //left motor driver code
-      Serial.println("Reverse");
+    else if(xbee == 0x42){ //B
+      L = (1200);          //right motor driver code
+      R = (1200);          //left motor driver code
+      //Serial.println("Backward");
     }
-    else if(xbee == 68){
-      LeftMotor.writeMicroseconds(1200);          //right motor driver code
-      RightMotor.writeMicroseconds(1800);          //left motor driver code
-      Serial.println("Turn Left");
+    else if(xbee == 0x4C){ //L
+      L = (1200);          //right motor driver code
+      R = (1800);          //left motor driver code
+      //Serial.println("Turn Left");
     }
-    else if(xbee == 69){
-      LeftMotor.writeMicroseconds(1500);          //right motor driver code
-      RightMotor.writeMicroseconds(1500);          //left motor driver code
-      Serial.println("Stop");
+    else if (xbee == 0x53) { //S
+      L = (1500);          //right motor driver code
+      R = (1500);          //left motor driver code
+      //Serial.println("Stop");
     }
-    else{
-      Serial.println("Out of Range");
-    }
+    delay(25);
   }
+  LeftMotor.writeMicroseconds(L);
+  RightMotor.writeMicroseconds(R);
 }
