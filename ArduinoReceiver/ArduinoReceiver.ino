@@ -42,7 +42,7 @@ void loop() {
       int high = data[1];
       int low = data[2];
       //HHHHHHHHLLLLLLLL
-      int pwm = (high << 8) | low;
+      int pwm = constrain(((high << 8) | low) - 512, -500, 500) + 1500; // Clamp between -500 and 500, then add 1500 to put it in range
       if (IS_L(data[0])) { // Set left
         L = pwm;
       } else if (IS_R(data[0])) { // Set right
