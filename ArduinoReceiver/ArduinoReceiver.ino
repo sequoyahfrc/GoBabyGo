@@ -1,63 +1,65 @@
-//A delay of 1000 to 1460 Microseconds is Proportional Reverse
-//A delay of 1460 to 1540 Microseconds is neutral
-//A delay of 1540 to 2000 Microseconds is Proportional Forward
-//A delay of 2000 Microseconds is Full Forward
+// 1000 is full reverse
+// 1500 is neutral
+// 2000 is full forward
 
 #include <Servo.h>
 
+#define IS_SEPERATOR(v) IS_L(v) || IS_R(v)
+#define IS_L(v) v == 0x4C // ASCII for L
+#define IS_R(v) v == 0x52 // ASCII for R
 
-int LeftPin = 6;      //Left Motor pin
-Servo LeftMotor;           //Left Motor Servo Object
 
-int RightPin = 5;      //Right Motor pin
-Servo RightMotor;           //Right Motor Servo Object
+#define PIN_L 6
+#define PIN_R 5
+#define MESSAGE_SIZE 3
+
+Servo leftMotor;      // Left Motor Servo Object
+Servo rightMotor;     // Right Motor Servo Object
 
 int L, R;
+unsigned char* data = (unsigned char*)malloc(MESSAGE_SIZE); // Use malloc to get 3 bytes of RAM; Data: L/R + high + low
 
 void setup()
 {
   // Tells each of the servo objects which pin it should output to
-  LeftMotor.attach(LeftPin);
-  RightMotor.attach(RightPin);
+  leftMotor.attach(PIN_L);
+  rightMotor.attach(PIN_R);
 
-  Serial.begin(9600);
-  LeftMotor.writeMicroseconds(1500);          //right motor driver code
-  RightMotor.writeMicroseconds(1500);          //left motor driver code
+  Serial.begin(9600); // Init serial
+  // Set default values because 0 means full reverse
   L = 1500;
   R = 1500;
+
+  memset(data, 0x00, MESSAGE_SIZE);
 }
 
 void loop() {
-  if(Serial.available() > 0){
-    int xbee = Serial.read();
-    
-    if(xbee == 0x46){ //F
-      L = (1800);          //right motor driver code
-      R = (1800);          //left motor driver code
-      //Serial.println("Forward");
+  if(Serial.available() >= MESSAGE_SIZE){
+    Serial.readBytes(data, MESSAGE_SIZE);
+
+    // Only read message if start is 'L' or 'R'
+    if (IS_SEPERATOR(data[0])) {
+      int high = data[1];
+      int low = data[2];
+      //HHHHHHHHLLLLLLLL
+      int pwm = constrain(((high << 8) | low) - 512, -500, 500) + 1500; // Clamp between -500 and 500, then add 1500 to put it in range
+      if (IS_L(data[0])) { // Set left
+        L = pwm;
+      } else if (IS_R(data[0])) { // Set right
+        R = pwm;
+      }
+    } else {
+      unsigned char* temp = (unsigned char *)malloc(1); // Get 1 byte of RAM
+      while (!IS_SEPERATOR(temp[0])) {
+        temp = Serial.readBytes(temp, 1);
+      }
+      free(temp); // Clean up RAM because we don't need it anymore
     }
-    else if(xbee == 0x52){ //R
-      L = (1800);          //right motor driver code
-      R = (1200);          //left motor driver code
-      //Serial.println("Turn Right");
-    }
-    else if(xbee == 0x42){ //B
-      L = (1200);          //right motor driver code
-      R = (1200);          //left motor driver code
-      //Serial.println("Backward");
-    }
-    else if(xbee == 0x4C){ //L
-      L = (1200);          //right motor driver code
-      R = (1800);          //left motor driver code
-      //Serial.println("Turn Left");
-    }
-    else if (xbee == 0x53) { //S
-      L = (1500);          //right motor driver code
-      R = (1500);          //left motor driver code
-      //Serial.println("Stop");
-    }
-    delay(25);
+
+    // Use memset to copy MESSAGE_SIZE 0x00's to data
+    // Just sets all the values in data to 0x00 (which is zero)
+    memset(data, 0x00, MESSAGE_SIZE); // Reset message data
   }
-  LeftMotor.writeMicroseconds(L);
-  RightMotor.writeMicroseconds(R);
+  leftMotor.writeMicroseconds(L);
+  rightMotor.writeMicroseconds(R);
 }
