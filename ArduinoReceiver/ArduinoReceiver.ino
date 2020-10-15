@@ -16,15 +16,19 @@
 Servo leftMotor;      // Left Motor Servo Object
 Servo rightMotor;     // Right Motor Servo Object
 
+<<<<<<< HEAD
 int L, R;
 unsigned char* data = (unsigned char*)malloc(MESSAGE_SIZE); // Use malloc to get 3 bytes of RAM; Data: L/R + high + low
 
+=======
+>>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
 void setup()
 {
   // Tells each of the servo objects which pin it should output to
   leftMotor.attach(PIN_L);
   rightMotor.attach(PIN_R);
 
+<<<<<<< HEAD
   Serial.begin(9600); // Init serial
   // Set default values because 0 means full reverse
   L = 1500;
@@ -63,3 +67,44 @@ void loop() {
   leftMotor.writeMicroseconds(L);
   rightMotor.writeMicroseconds(R);
 }
+=======
+  Serial.begin(9600);
+  LeftMotor.writeMicroseconds(1500);          //right motor driver code
+  RightMotor.writeMicroseconds(1500);          //left motor driver code
+}
+
+void loop() {
+  if(Serial.available() > 0){
+    int xbee=Serial.read();
+    
+    if(xbee == 65){
+      LeftMotor.writeMicroseconds(1800);          //right motor driver code
+      RightMotor.writeMicroseconds(1800);          //left motor driver code
+      Serial.println("Forward");
+    }
+    else if(xbee == 66){
+      LeftMotor.writeMicroseconds(1800);          //right motor driver code
+      RightMotor.writeMicroseconds(1200);          //left motor driver code
+      Serial.println("Turn Right");
+    }
+    else if(xbee == 67){
+      LeftMotor.writeMicroseconds(1200);          //right motor driver code
+      RightMotor.writeMicroseconds(1200);          //left motor driver code
+      Serial.println("Reverse");
+    }
+    else if(xbee == 68){
+      LeftMotor.writeMicroseconds(1200);          //right motor driver code
+      RightMotor.writeMicroseconds(1800);          //left motor driver code
+      Serial.println("Turn Left");
+    }
+    else if(xbee == 69){
+      LeftMotor.writeMicroseconds(1500);          //right motor driver code
+      RightMotor.writeMicroseconds(1500);          //left motor driver code
+      Serial.println("Stop");
+    }
+    else{
+      Serial.println("Out of Range");
+    }
+  }
+}
+>>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
