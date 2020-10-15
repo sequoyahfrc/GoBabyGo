@@ -25,35 +25,19 @@ void setup()
 
 void loop() {
   if(Serial.available() > 0){
-    int xbee=Serial.read();
-    
-    if(xbee == 65){
-      leftMotor.writeMicroseconds(1800);          //right motor driver code
-      rightMotor.writeMicroseconds(1800);          //left motor driver code
-      Serial.println("Forward");
+    if(Serial.read()== 76){ //Looks for letter L
+      int input = Serial.parseInt();  // keep other operations outside the constrain function
+      int constrainedInput = constrain(input, 0, 2000);
+      leftMotor.writeMicroseconds(constrainedInput);
     }
-    else if(xbee == 66){
-      leftMotor.writeMicroseconds(1800);          //right motor driver code
-      rightMotor.writeMicroseconds(1200);          //left motor driver code
-      Serial.println("Turn Right");
+    else if(Serial.read()== 82){ //Looks for letter R
+      int input = Serial.parseInt();  // keep other operations outside the constrain function
+      int constrainedInput = constrain(input, 0, 2000);
+      rightMotor.writeMicroseconds(constrainedInput);
     }
-    else if(xbee == 67){
-      leftMotor.writeMicroseconds(1200);          //right motor driver code
-      rightMotor.writeMicroseconds(1200);          //left motor driver code
-      Serial.println("Reverse");
-    }
-    else if(xbee == 68){
-      leftMotor.writeMicroseconds(1200);          //right motor driver code
-      rightMotor.writeMicroseconds(1800);          //left motor driver code
-      Serial.println("Turn Left");
-    }
-    else if(xbee == 69){
-      leftMotor.writeMicroseconds(1500);          //right motor driver code
-      rightMotor.writeMicroseconds(1500);          //left motor driver code
-      Serial.println("Stop");
-    }
-    else{
-      Serial.println("Out of Range");
+    else{ // No letters, turns off the motors
+        leftMotor.writeMicroseconds(1500);          //sets to neutral
+        rightMotor.writeMicroseconds(1500); 
     }
   }
 }

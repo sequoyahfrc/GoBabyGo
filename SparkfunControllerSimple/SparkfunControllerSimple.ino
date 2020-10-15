@@ -20,20 +20,9 @@ void loop() {
   leftStick = analogRead(L_JOYSTICK); //~1023 up, ~7-9 down
   rightStick = analogRead(R_JOYSTICK); //~1023 up, ~7-9 down
 
-   if (leftStick > 1000 && rightStick > 1000) {
-      Serial1.print('A'); 
-    }
-    else if ( leftStick > 1000 && rightStick < 400) {
-      Serial1.print('B');
-    }
-    else if (leftStick < 400 && rightStick < 400) {
-      Serial1.print('C');
-    }
-    else if (leftStick < 400 && rightStick > 1000) {
-      Serial1.print('D');
-    }
-    else {
-      Serial1.print('E');
-    }
+   Serial1.print('L');
+   Serial1.print(leftStick);
+   Serial1.print('R');
+   Serial1.print(rightStick); 
     delay(50);
 }//end loop
