@@ -12,6 +12,9 @@ unsigned char* data = (unsigned char*)malloc(MESSAGE_SIZE); // Get 3 bytes of RA
 #define L_JOYSTICK A3   // Pin used for left joystick
 #define R_JOYSTICK A0   // Pin used for right joystick
 
+<<<<<<< HEAD
+>>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
+=======
 >>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
 
 void setup() {  

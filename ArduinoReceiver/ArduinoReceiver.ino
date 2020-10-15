@@ -13,6 +13,7 @@
 #define PIN_R 5
 #define MESSAGE_SIZE 3
 
+<<<<<<< HEAD
 Servo leftMotor;      // Left Motor Servo Object
 Servo rightMotor;     // Right Motor Servo Object
 
@@ -20,6 +21,8 @@ Servo rightMotor;     // Right Motor Servo Object
 int L, R;
 unsigned char* data = (unsigned char*)malloc(MESSAGE_SIZE); // Use malloc to get 3 bytes of RAM; Data: L/R + high + low
 
+=======
+>>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
 =======
 >>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
 void setup()
@@ -106,5 +109,9 @@ void loop() {
       Serial.println("Out of Range");
     }
   }
+<<<<<<< HEAD
+}
+>>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
+=======
 }
 >>>>>>> parent of 5994b76... Merge branch 'master' of https://github.com/sequoyahfrc/mobility-wheelchair into master
