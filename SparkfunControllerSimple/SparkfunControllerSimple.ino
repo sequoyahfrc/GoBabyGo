@@ -24,5 +24,9 @@ void loop() {
    Serial1.print(leftStick);
    Serial1.print('R');
    Serial1.print(rightStick); 
-    delay(50);
+   SerialUSB.print('L');
+   SerialUSB.println(leftStick);
+   SerialUSB.print('R');
+   SerialUSB.println(rightStick); 
+    delay(500);
 }//end loop
